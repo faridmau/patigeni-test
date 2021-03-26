@@ -19,11 +19,12 @@ class CreateResidentsTable extends Migration
             $table->string('nama');
             $table->text('alamat');
             $table->date('DOB');//date of birth
-            $table->string('telepon');
+            $table->string('telepon')->nullable();;
             $table->string('pekerjaan');
             $table->enum('gender',['l','p']);
             $table->string('agama');
             $table->string('status');
+            $table->string('foto')->nullable();;
             $table->timestamps();
         });
     }

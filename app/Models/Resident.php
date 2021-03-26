@@ -8,4 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class Resident extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'nik',
+        'nama',
+        'alamat',
+        'DOB',
+        'telepon',
+        'pekerjaan',
+        'gender',
+        'agama',
+        'status',
+        'foto'
+    ];
 }

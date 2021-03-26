@@ -48,18 +48,29 @@ class ResidentController extends Controller
             'agama' => 'required',
             'status' => 'required',
 		]);
-        $file = $request->file('foto_file');
-        $nama_file = time()."_".$file->getClientOriginalName();
- 
-      	        // isi dengan nama folder tempat kemana file diupload
-		$tujuan_upload = 'foto/';
-        $foto_path = 'public/'.$tujuan_upload.$nama_file;
-		$file->move($tujuan_upload,$nama_file);
-
+        
+        if ($request->file('foto_file')) {
+            $file = $request->file('foto_file');
+            $tujuan_upload = 'foto/';
+            $nama_file = time()."_".$file->getClientOriginalName();
+            $foto_path = 'public/'.$tujuan_upload.$nama_file;
+            $file->move($tujuan_upload,$nama_file);
+            $request->request->add(['foto' => $foto_path]); 
+        }
+        
         $nik = rand(1,999999999999999);
         $request->request->add(['nik' => $nik]); 
-        $request->request->add(['foto' => $foto_path]); 
-        Resident::create($request->all());
+        $data = $request->except(['_token']);
+        if (!isset($data['id'])) {
+            // dd('masuk 1');
+            Resident::create($data);
+        }else{
+            // dd('masuk 2');
+            Resident::where('id', $data['id'])->update($data);
+        }
+        // die;
+        Resident::updateOrCreate($data);
+        
         return redirect('residents')->with('status', 'Data Tersimpan!');;
     }
 
@@ -82,21 +93,9 @@ class ResidentController extends Controller
      */
     public function edit($id)
     {
-        //
+        $resident = Resident::findOrFail($id);
+        return view('backend.resident.edit',['resident' => $resident]);
     }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -105,6 +104,9 @@ class ResidentController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = Resident::find($id);
+        $user->delete();
+
+        return redirect('/residents')->with('status', 'Data has been deleted');
     }
 }
