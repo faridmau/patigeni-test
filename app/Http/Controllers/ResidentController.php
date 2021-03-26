@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use App\Models\Resident;
 use App\Http\Requests\ResidentRequest;
 use Illuminate\Http\UploadedFile;
+
+use App\Exports\ResidentExport;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\ResidentImport;
 class ResidentController extends Controller
 {
     /**
@@ -108,5 +112,16 @@ class ResidentController extends Controller
         $user->delete();
 
         return redirect('/residents')->with('status', 'Data has been deleted');
+    }
+    public function export(){
+        // dd('asd');
+        return Excel::download(new ResidentExport, 'residents.csv');
+    }
+    public function import(Request $request) 
+    {
+        // dd($request->all());
+        Excel::import(new ResidentImport, $request->file('file'));
+        
+        return redirect('/residents')->with('status', 'File Imported!');
     }
 }

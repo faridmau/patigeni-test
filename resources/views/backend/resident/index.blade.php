@@ -4,6 +4,13 @@
 
 <div class="container table-responsive py-5"> 
     <a type="button" class="btn btn-primary" href="{{ route('residents.create') }}">Add</a>
+    
+    <a type="button" class="btn btn-primary" href="{{ route('residents.export') }}" >Export</a>
+    <form action="{{ route('residents.import') }}" method="post" enctype="multipart/form-data">
+        @csrf
+        <input type="file" name="file">
+        <button class="btn btn-primary" type="submit">Import</button>
+    </form>
     @if (session('status'))
         <div class="alert alert-success">
             {{ session('status') }}
@@ -54,4 +61,10 @@
       </tbody>
     </table>
     {{ $residents->links() }}
+    <script>
+        function exportTasks(_this) {
+            let _url = $(_this).data('href');
+            window.location.href = _url;
+        }
+    </script>
 @endsection

@@ -16,4 +16,7 @@ use App\Http\Controllers\ResidentController;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/residents/export', [ResidentController::class, 'export'])->name('residents.export');
+Route::post('/residents/import', [ResidentController::class, 'import'])->name('residents.import');
 Route::resource('residents', ResidentController::class);
+

@@ -3,7 +3,7 @@
 @section('content')
 <h1>Edit Kartu Tanda Penduduk : {{ $resident->nama }} - NIK : {{ $resident->nik }}</h1>
 
-    <a type="button" class="btn btn-danger" href="{{ route('residents.create') }}">Back</a>
+    <a type="button" class="btn btn-danger" href="{{ route('residents.index') }}">Back</a>
     <div>
         @foreach ($errors->all() as $message)
             {{ $message }}
