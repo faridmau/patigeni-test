@@ -138,6 +138,15 @@
             <li>
               <a class='active' href="{{ route('residents.index') }}">Kartu Tanda Penduduk</a>
             </li>
+            <li>
+              <form method="POST" action="{{ route('logout') }}">
+                @csrf
+  
+                <button type="submit" class="underline text-sm text-gray-600 hover:text-gray-900">
+                    {{ __('Log out') }}
+                </button>
+            </form>
+            </li>
             
           </ul>
         </div> 

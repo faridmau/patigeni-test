@@ -73,7 +73,7 @@
           </div>
         </div>
         <div class="custom-file">
-            <input name="foto_file" type="file" class="custom-file-input" id="validatedCustomFile">
+            <input name="foto" type="file" class="custom-file-input" id="validatedCustomFile">
             <label class="custom-file-label" for="validatedCustomFile">Choose Photo...</label>
             <div class="invalid-feedback">Example invalid custom file feedback</div>
           </div>

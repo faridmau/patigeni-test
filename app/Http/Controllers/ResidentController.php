@@ -12,6 +12,11 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\ResidentImport;
 class ResidentController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth')->except(['export', 'show']);
+//        $this->authorizeResource('post');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -30,6 +35,7 @@ class ResidentController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Resident::class);
         // dd($resident);
         return view('backend.resident.create');
     }
@@ -43,7 +49,7 @@ class ResidentController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-			'foto_file' => 'file|image|mimes:jpeg,png,jpg|max:2048',
+			'foto' => 'file|image|mimes:jpeg,png,jpg|max:2048',
             'nama' => 'required',
             'alamat' => 'required',
             'DOB' => 'required',
@@ -53,8 +59,8 @@ class ResidentController extends Controller
             'status' => 'required',
 		]);
         
-        if ($request->file('foto_file')) {
-            $file = $request->file('foto_file');
+        if ($request->file('foto')) {
+            $file = $request->file('foto');
             $tujuan_upload = 'foto/';
             $nama_file = time()."_".$file->getClientOriginalName();
             $foto_path = 'public/'.$tujuan_upload.$nama_file;
@@ -97,6 +103,7 @@ class ResidentController extends Controller
      */
     public function edit($id)
     {
+        $this->authorize('edit', Resident::class);
         $resident = Resident::findOrFail($id);
         return view('backend.resident.edit',['resident' => $resident]);
     }
@@ -108,6 +115,7 @@ class ResidentController extends Controller
      */
     public function destroy($id)
     {
+        $this->authorize('delete', Resident::class);
         $user = Resident::find($id);
         $user->delete();
 

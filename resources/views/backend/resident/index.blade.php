@@ -8,7 +8,7 @@
     <a type="button" class="btn btn-primary" href="{{ route('residents.export') }}" >Export</a>
     <form action="{{ route('residents.import') }}" method="post" enctype="multipart/form-data">
         @csrf
-        <input type="file" name="file">
+        <input type="file" name="file" required>
         <button class="btn btn-primary" type="submit">Import</button>
     </form>
     @if (session('status'))
