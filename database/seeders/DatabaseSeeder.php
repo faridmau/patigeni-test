@@ -3,7 +3,8 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-
+use Database\Seeders\PermissionsSeeder;
+use Database\Seeders\ResidentSeeder;
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -13,5 +14,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        $this->call([
+            PermissionsSeeder::class,
+            ResidentSeeder::class,
+        ]);
     }
 }

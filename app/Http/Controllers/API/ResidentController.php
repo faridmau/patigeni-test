@@ -11,7 +11,7 @@ class ResidentController extends Controller
 {
     public function residents()
     {
-        $residents = new ResidentResource(Resident::all());
+        $residents = new ResidentResource(Resident::paginate());
         return $residents;
     }
 }
