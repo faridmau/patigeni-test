@@ -21,19 +21,20 @@ class PermissionsSeeder extends Seeder
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
         // create permissions
-        Permission::create(['name' => 'view residents']);
-        Permission::create(['name' => 'add residents']);
-        Permission::create(['name' => 'edit residents']);
-        Permission::create(['name' => 'delete residents']);
-        Permission::create(['name' => 'import residents']);
-        Permission::create(['name' => 'export residents']);
-        // Permission::create(['name' => 'publish residents']);
-        // Permission::create(['name' => 'unpublish residents']);
+        Permission::create(['name' => 'residents.index']);
+        Permission::create(['name' => 'residents.show']);
+        Permission::create(['name' => 'residents.create']);
+        Permission::create(['name' => 'residents.store']);
+        Permission::create(['name' => 'residents.destroy']);
+        Permission::create(['name' => 'residents.edit']);
+        Permission::create(['name' => 'residents.import']);
+        Permission::create(['name' => 'residents.export']);
 
         // create roles and assign existing permissions
         $role1 = Role::create(['name' => 'user']);
-        $role1->givePermissionTo('view residents');
-        $role1->givePermissionTo('export residents');
+        $role1->givePermissionTo('residents.index');
+        $role1->givePermissionTo('residents.show');
+        $role1->givePermissionTo('residents.export');
 
         $role2 = Role::create(['name' => 'admin']);
         // gets all permissions via Gate::before rule; see AuthServiceProvider

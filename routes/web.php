@@ -12,11 +12,13 @@ use App\Http\Controllers\ResidentController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::group(['middleware' => ['auth']], function() {
+    Route::get('/', [ResidentController::class, 'index']);
 
-Route::get('/', [ResidentController::class, 'index']);
+    Route::get('residents/export', [ResidentController::class, 'export'])->name('residents.export');
+    Route::post('residents/import', [ResidentController::class, 'import'])->name('residents.import');
+    Route::resource('residents', ResidentController::class);
 
-Route::get('residents/export', [ResidentController::class, 'export'])->name('residents.export');
-Route::post('residents/import', [ResidentController::class, 'import'])->name('residents.import');
-Route::resource('residents', ResidentController::class);
+});
 
 require __DIR__.'/auth.php';

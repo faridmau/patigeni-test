@@ -6,17 +6,13 @@ use Illuminate\Http\Request;
 use App\Models\Resident;
 use App\Http\Requests\ResidentRequest;
 use Illuminate\Http\UploadedFile;
-
+use Illuminate\Support\Facades\Auth;
 use App\Exports\ResidentExport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\ResidentImport;
+
 class ResidentController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth')->except(['export', 'show']);
-//        $this->authorizeResource('post');
-    }
     /**
      * Display a listing of the resource.
      *
@@ -24,6 +20,8 @@ class ResidentController extends Controller
      */
     public function index()
     {
+        
+        // $user->hasPermissionTo('residents.index');
         $residents = Resident::paginate(5);
         return view('backend.resident.index', ['residents' => $residents]);
     }
@@ -36,7 +34,6 @@ class ResidentController extends Controller
     public function create()
     {
         $this->authorize('create', Resident::class);
-        // dd($resident);
         return view('backend.resident.create');
     }
 
@@ -72,14 +69,10 @@ class ResidentController extends Controller
         $request->request->add(['nik' => $nik]); 
         $data = $request->except(['_token']);
         if (!isset($data['id'])) {
-            // dd('masuk 1');
             Resident::create($data);
         }else{
-            // dd('masuk 2');
             Resident::where('id', $data['id'])->update($data);
         }
-        // die;
-        Resident::updateOrCreate($data);
         
         return redirect('residents')->with('status', 'Data Tersimpan!');;
     }
@@ -122,12 +115,10 @@ class ResidentController extends Controller
         return redirect('/residents')->with('status', 'Data has been deleted');
     }
     public function export(){
-        // dd('asd');
         return Excel::download(new ResidentExport, 'residents.csv');
     }
     public function import(Request $request) 
     {
-        // dd($request->all());
         Excel::import(new ResidentImport, $request->file('file'));
         
         return redirect('/residents')->with('status', 'File Imported!');
